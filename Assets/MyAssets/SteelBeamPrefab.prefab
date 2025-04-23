@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5068584792260383046, guid: 8ed49c689672d2c499bdc54d3c234b0c, type: 3}
       propertyPath: m_Name
-      value: OTHER Variant
+      value: SteelBeamPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068584792260383046, guid: 8ed49c689672d2c499bdc54d3c234b0c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8986545683534465454, guid: 8ed49c689672d2c499bdc54d3c234b0c, type: 3}
       propertyPath: m_Materials.Array.data[0]
