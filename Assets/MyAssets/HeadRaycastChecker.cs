@@ -21,6 +21,9 @@ public class HeadRaycastChecker : MonoBehaviour
     public delegate void FallEvent();
     public event FallEvent OnPlayerFall;
 
+    // 落下状態を外部から確認できるようにするためのプロパティ
+    public bool HasFallen => hasFallen;
+
     // 更新処理
     private void Update()
     {
@@ -36,19 +39,26 @@ public class HeadRaycastChecker : MonoBehaviour
         // レイキャストが何にも当たらなかった場合（空中に浮いている状態）
         if (!headRayHit)
         {
-            // 落下フラグを設定
-            hasFallen = true;
-            Debug.Log("頭の下に何もありません。落下判定を有効にします。以降この判定は無効化されます。");
-
-            // 落下イベントを通知
-            if (OnPlayerFall != null)
-            {
-                OnPlayerFall.Invoke();
-            }
-
-            // 指定タグのオブジェクトをすべて削除
-            DestroyObjectsWithTag(pillarTag);
+            // 落下判定を有効化
+            TriggerFall();
         }
+    }
+
+    // 外部からも落下をトリガーできるようにするためのパブリックメソッド
+    public void TriggerFall()
+    {
+        if (hasFallen)
+            return;
+
+        // 落下フラグを設定
+        hasFallen = true;
+        Debug.Log("落下判定を有効にします。以降この判定は無効化されます。");
+
+        // 落下イベントを通知
+        OnPlayerFall?.Invoke();
+
+        // 指定タグのオブジェクトをすべて削除
+        DestroyObjectsWithTag(pillarTag);
     }
 
     // 頭の下に地面や柱があるかを判定するメソッド
