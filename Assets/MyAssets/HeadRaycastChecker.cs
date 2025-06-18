@@ -5,14 +5,8 @@ public class HeadRaycastChecker : MonoBehaviour
     // 頭の位置を指定
     public Transform headTransform;
 
-    // 判定する柱かつ落下時に削除するオブジェクトのタグ
-    public string pillarTag = "Pillar";
-
     // 無視するレイヤー（複数選択可能）
     public LayerMask ignoreLayerMask;
-
-    // 落下判定が一度でも有効になったかどうか
-    private bool hasFallen = false;
 
     // Rayの判定距離
     public float checkDistance = 2.0f;
@@ -21,22 +15,36 @@ public class HeadRaycastChecker : MonoBehaviour
     public delegate void FallEvent();
     public event FallEvent OnPlayerFall;
 
-    // 落下状態を外部から確認できるようにするためのプロパティ
-    public bool HasFallen => hasFallen;
+    // PillarControllerへの参照
+    private PillarController pillarController;
+    
+    // TownMovingUpControllerへの参照
+    private TownMovingUpController townMovingUpController;
+
+    private void Start()
+    {
+        // PillarControllerの参照を取得
+        pillarController = PillarController.Instance;
+        if (pillarController == null)
+        {
+            Debug.LogError("PillarControllerが見つかりません。シーンに追加してください。");
+        }
+        
+        // TownMovingUpControllerの参照を取得
+        townMovingUpController = TownMovingUpController.Instance;
+        if (townMovingUpController == null)
+        {
+            Debug.LogError("TownMovingUpControllerが見つかりません。シーンに追加してください。");
+        }
+    }
 
     // 更新処理
     private void Update()
     {
-        // すでに一度落下判定が発生していた場合は処理をスキップ
-        if (hasFallen)
-        {
-            return;
-        }
-
         // 頭の位置から下方向へのレイキャストで柱との接触を確認
         bool headRayHit = IsHeadAboveSurface();
 
-        // レイキャストが何にも当たらなかった場合（空中に浮いている状態）
+        // レイキャストが何にも当たらなかった場合（柱から外れた）
         if (!headRayHit)
         {
             // 落下判定を有効化
@@ -44,21 +52,19 @@ public class HeadRaycastChecker : MonoBehaviour
         }
     }
 
-    // 外部からも落下をトリガーできるようにするためのパブリックメソッド
-    public void TriggerFall()
+    // 落下する場合の処理
+    private void TriggerFall()
     {
-        if (hasFallen)
-            return;
-
-        // 落下フラグを設定
-        hasFallen = true;
-        Debug.Log("落下判定を有効にします。以降この判定は無効化されます。");
-
-        // 落下イベントを通知
-        OnPlayerFall?.Invoke();
-
-        // 指定タグのオブジェクトをすべて削除
-        DestroyObjectsWithTag(pillarTag);
+        // PillarControllerを通じて柱を無効化
+        if (pillarController != null)
+        {
+            pillarController.DeactivatePillars();
+        }
+        // townMovingUpControllerを通じて柱を無効化
+        if (townMovingUpController != null)
+        {
+            townMovingUpController.StartMovingUp();
+        }
     }
 
     // 頭の下に地面や柱があるかを判定するメソッド
@@ -79,27 +85,12 @@ public class HeadRaycastChecker : MonoBehaviour
         // Raycastでヒットしたかどうかを確認（指定レイヤーは無視）
         if (Physics.Raycast(ray, out RaycastHit hit, checkDistance, layerMask))
         {
-            // ヒットしたオブジェクトが指定したタグを持っているか確認
-            if (hit.collider.CompareTag(pillarTag))
+            // ヒットしたオブジェクトが柱かどうかを確認
+            if (pillarController != null && hit.collider.CompareTag(pillarController.pillarTag))
             {
-                return true; // 指定したタグを持つオブジェクトに当たった
+                return true; // 柱に当たった
             }
         }
-
-        return false; // 何も当たらないか、指定したタグを持たないオブジェクトに当たった
-    }
-
-    // 特定のタグを持つすべてのオブジェクトを削除するメソッド
-    private void DestroyObjectsWithTag(string tag)
-    {
-        GameObject[] objectsToDestroy = GameObject.FindGameObjectsWithTag(tag);
-
-        foreach (GameObject obj in objectsToDestroy)
-        {
-            Debug.Log($"落下判定により '{tag}' タグのオブジェクトを削除: {obj.name}");
-            Destroy(obj);
-        }
-
-        Debug.Log($"合計 {objectsToDestroy.Length} 個の '{tag}' タグのオブジェクトを削除しました");
+        return false; // 何も当たらないか、柱以外のものに当たった
     }
 }
