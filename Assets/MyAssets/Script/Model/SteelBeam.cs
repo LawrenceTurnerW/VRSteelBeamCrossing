@@ -3,7 +3,5 @@
 using UnityEngine;
 
 // 鉄骨であることを示すためのマーカーコンポーネント
-public class SteelBeam : MonoBehaviour
-{
-
+public class SteelBeam : MonoBehaviour {
 }

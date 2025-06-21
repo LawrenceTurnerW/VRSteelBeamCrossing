@@ -13,7 +13,7 @@ public class TownMovingUpController : MonoBehaviour {
 			return _instance;
 		}
 	}
-	
+
 	private Vector3 initialPosition;
 
 	private void Awake() {
@@ -23,7 +23,7 @@ public class TownMovingUpController : MonoBehaviour {
 		}
 
 		_instance = this;
-		
+
 		if (townTransform != null) {
 			// 初期位置を保存
 			initialPosition = townTransform.position;
@@ -52,7 +52,7 @@ public class TownMovingUpController : MonoBehaviour {
 			Debug.Log("町の上昇を開始します");
 		}
 	}
-	
+
 	// 外部から呼び出して元の位置に瞬時に戻す
 	public void ResetPosition() {
 		if (townTransform != null) {
