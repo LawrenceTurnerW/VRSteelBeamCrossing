@@ -3,13 +3,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SteelBeamGroupController : MonoBehaviour
+public class ToggleDebugSteelBeamController : MonoBehaviour
 {
 	[Tooltip("このコントローラーで有効/無効を切り替える足場のリスト")]
 	public List<GameObject> targetSteelBeamObject;
 
 	// 登録された足場の有効/無効を切り替える
-	public void ToggleScaffoldsActivity()
+	public void ToggleSteelBeamsActivity()
 	{
 		if (targetSteelBeamObject == null || targetSteelBeamObject.Count == 0)
 		{
@@ -20,11 +20,11 @@ public class SteelBeamGroupController : MonoBehaviour
 		// リストの最初の足場の状態を基準に、すべての足場の状態を統一して切り替える
 		bool newState = !targetSteelBeamObject[0].activeSelf;
 
-		foreach (var scaffold in targetSteelBeamObject)
+		foreach (var steelBeam in targetSteelBeamObject)
 		{
-			if (scaffold != null)
+			if (steelBeam != null)
 			{
-				scaffold.SetActive(newState);
+				steelBeam.SetActive(newState);
 			}
 		}
 	}
