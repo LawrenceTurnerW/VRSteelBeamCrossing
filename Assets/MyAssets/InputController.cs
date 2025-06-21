@@ -6,17 +6,31 @@ public class InputController : MonoBehaviour {
 	[Tooltip("操作対象のScaffoldGroupController")]
 	public ScaffoldGroupController scaffoldGroupController;
 
-	[Tooltip("使用するコントローラーのボタン")] public OVRInput.Button targetButton = OVRInput.Button.One;
+	[Tooltip("操作対象のTownMovingUpController")]
+	public TownMovingUpController townMovingUpController;
+	
+	[Tooltip("操作対象のPillarController")]
+	public PillarController pillarController;
+
+	[Tooltip("柱の消去に使用するコントローラーのボタン")] public OVRInput.Button scaffoldTargetButton = OVRInput.Button.One;
+	[Tooltip("位置リセットに使用するコントローラーのボタン")] public OVRInput.Button ressetTargetButton = OVRInput.Button.Two;
 
 	void Update() {
 		// 指定されたボタンが押された瞬間を検知
-		if (OVRInput.GetDown(targetButton)) {
+		if (OVRInput.GetDown(scaffoldTargetButton)) {
 			if (scaffoldGroupController != null) {
 				scaffoldGroupController.ToggleScaffoldsActivity();
 			}
-			else {
-				Debug.LogWarning("ScaffoldGroupControllerが設定されていません。");
+		}
+
+		// 指定されたボタンが押された瞬間を検知
+		if (OVRInput.GetDown(ressetTargetButton)) {
+			if (townMovingUpController != null) {
+				townMovingUpController.ResetPosition();
+			}
+			if (pillarController != null) {
+				pillarController.ReactivatePillars();
 			}
 		}
 	}
-}　
+}

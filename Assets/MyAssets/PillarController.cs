@@ -56,6 +56,7 @@ public class PillarController : MonoBehaviour {
 		foreach (GameObject pillar in deactivatedPillars) {
 			if (pillar != null) {
 				pillar.SetActive(true);
+				isDeactivate = false;
 				Debug.Log($"柱を再有効化: {pillar.name}");
 			}
 		}

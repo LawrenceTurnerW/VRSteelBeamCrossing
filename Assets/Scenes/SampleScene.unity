@@ -63367,7 +63367,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaffoldGroupController: {fileID: 538502975}
-  targetButton: 1
+  townMovingUpController: {fileID: 1857815289}
+  pillarController: {fileID: 1850752882}
+  scaffoldTargetButton: 1
+  ressetTargetButton: 2
 --- !u!1001 &549640113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -218598,7 +218601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1846827187
 MonoBehaviour:
   m_ObjectHideFlags: 0
