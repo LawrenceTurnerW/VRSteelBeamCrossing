@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour {
 	[Tooltip("操作対象のScaffoldGroupController")]
-	public ScaffoldGroupController scaffoldGroupController;
+	public SteelBeamGroupController steelBeamGroupController;
 
 	[Tooltip("操作対象のTownMovingUpController")]
 	public TownMovingUpController townMovingUpController;
 	
-	[Tooltip("操作対象のPillarController")]
-	public PillarController pillarController;
+	[Tooltip("操作対象のSteelBeamController")]
+	public SteelBeamController steelBeamController;
 
 	[Tooltip("柱の消去に使用するコントローラーのボタン")] public OVRInput.Button scaffoldTargetButton = OVRInput.Button.One;
 	[Tooltip("位置リセットに使用するコントローラーのボタン")] public OVRInput.Button ressetTargetButton = OVRInput.Button.Two;
@@ -18,8 +18,8 @@ public class InputController : MonoBehaviour {
 	void Update() {
 		// 指定されたボタンが押された瞬間を検知
 		if (OVRInput.GetDown(scaffoldTargetButton)) {
-			if (scaffoldGroupController != null) {
-				scaffoldGroupController.ToggleScaffoldsActivity();
+			if (steelBeamGroupController != null) {
+				steelBeamGroupController.ToggleScaffoldsActivity();
 			}
 		}
 
@@ -28,8 +28,8 @@ public class InputController : MonoBehaviour {
 			if (townMovingUpController != null) {
 				townMovingUpController.ResetPosition();
 			}
-			if (pillarController != null) {
-				pillarController.ReactivatePillars();
+			if (steelBeamController != null) {
+				steelBeamController.ReactivateSteelBeams();
 			}
 		}
 	}

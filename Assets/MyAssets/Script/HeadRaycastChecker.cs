@@ -15,17 +15,17 @@ public class HeadRaycastChecker : MonoBehaviour {
 
 	public event FallEvent OnPlayerFall;
 
-	// PillarControllerへの参照
-	private PillarController pillarController;
+	// SteelBeamControllerへの参照
+	private SteelBeamController _steelBeamController;
 
 	// TownMovingUpControllerへの参照
 	private TownMovingUpController townMovingUpController;
 
 	private void Start() {
-		// PillarControllerの参照を取得
-		pillarController = PillarController.Instance;
-		if (pillarController == null) {
-			Debug.LogError("PillarControllerが見つかりません。シーンに追加してください。");
+		// SteelBeamControllerの参照を取得
+		_steelBeamController = SteelBeamController.Instance;
+		if (_steelBeamController == null) {
+			Debug.LogError("SteelBeamControllerが見つかりません。シーンに追加してください。");
 		}
 
 		// TownMovingUpControllerの参照を取得
@@ -49,9 +49,9 @@ public class HeadRaycastChecker : MonoBehaviour {
 
 	// 落下する場合の処理
 	private void TriggerFall() {
-		// PillarControllerを通じて柱を無効化
-		if (pillarController != null) {
-			pillarController.DeactivatePillars();
+		// SteelBeamControllerを通じて柱を無効化
+		if (_steelBeamController != null) {
+			_steelBeamController.DeactivateSteelBeams();
 		}
 
 		// townMovingUpControllerを通じて柱を無効化
@@ -76,7 +76,7 @@ public class HeadRaycastChecker : MonoBehaviour {
 		// Raycastでヒットしたかどうかを確認（指定レイヤーは無視）
 		if (Physics.Raycast(ray, out RaycastHit hit, checkDistance, layerMask)) {
 			// ヒットしたオブジェクトが柱かどうかを確認
-			if (pillarController != null && hit.collider.CompareTag(pillarController.pillarTag)) {
+			if (_steelBeamController != null && hit.collider.CompareTag(_steelBeamController.steelBeamTag)) {
 				return true; // 柱に当たった
 			}
 		}
