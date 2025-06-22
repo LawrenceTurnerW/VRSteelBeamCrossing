@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: e391f00234292cc4f935308c11cf0e54, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -235328,7 +235328,7 @@ Camera:
   m_GameObject: {fileID: 2010532504}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -252228,7 +252228,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 547359309}
   - {fileID: 1177691516}
   - {fileID: 1846827189}
   - {fileID: 1759361743}
@@ -252237,6 +252236,7 @@ SceneRoots:
   - {fileID: 1855400331}
   - {fileID: 1850752883}
   - {fileID: 1204039546}
-  - {fileID: 1069331239}
   - {fileID: 1857815288}
+  - {fileID: 1069331239}
   - {fileID: 538502976}
+  - {fileID: 547359309}
