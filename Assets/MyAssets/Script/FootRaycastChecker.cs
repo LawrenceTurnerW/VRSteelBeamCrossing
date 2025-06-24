@@ -74,14 +74,19 @@ public class FootRaycastChecker : MonoBehaviour {
 		// 無視するレイヤーを除外したレイヤーマスクを作成
 		int layerMask = ~ignoreLayerMask.value;
 
+		bool isOnPillar = false;
 		// Raycastでヒットしたかどうかを確認
 		if (Physics.Raycast(ray, out RaycastHit hit, checkDistance, layerMask)) {
 			// ヒットしたオブジェクトが柱かどうかを確認
 			if (_steelBeamController != null && hit.collider.CompareTag(_steelBeamController.steelBeamTag)) {
-				return true; // 柱に当たった
+				isOnPillar = true; // 柱に当たった
 			}
 		}
 
-		return false; // 何も当たらないか、柱以外のものに当たった
+		// Rayをシーンビューで可視化します。柱に当たっている場合は緑、そうでない場合は赤で表示されます。
+		Color rayColor = isOnPillar ? Color.green : Color.red;
+		Debug.DrawRay(checkTransform.position, Vector3.down * checkDistance, rayColor);
+
+		return isOnPillar;
 	}
 }
