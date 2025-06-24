@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public class HeadRaycastChecker : MonoBehaviour {
-	// 頭の位置を指定  
-	public Transform headTransform;
+public class FootRaycastChecker : MonoBehaviour {
+	// 足の位置を指定
+	public Transform foot1Transform;
+	public Transform foot2Transform;
 
 	// 無視するレイヤー（複数選択可能）
 	public LayerMask ignoreLayerMask;
 
-	// Rayの判定距離 
+	// Rayの判定距離
 	public float checkDistance = 2.0f;
 
 	// 落下時のイベントを通知するためのデリゲート
@@ -37,12 +38,12 @@ public class HeadRaycastChecker : MonoBehaviour {
 
 	// 更新処理
 	private void Update() {
-		// 頭の位置から下方向へのレイキャストで柱との接触を確認
-		bool headRayHit = IsHeadAboveSurface();
+		// 両足が柱の上にあるか確認
+		bool foot1OnPillar = IsOnSurface(foot1Transform);
+		bool foot2OnPillar = IsOnSurface(foot2Transform);
 
-		// レイキャストが何にも当たらなかった場合（柱から外れた）
-		if (!headRayHit) {
-			// 落下判定を有効化
+		// 両足とも柱から外れた場合に落下を開始
+		if (!foot1OnPillar && !foot2OnPillar) {
 			TriggerFall();
 		}
 	}
@@ -60,20 +61,20 @@ public class HeadRaycastChecker : MonoBehaviour {
 		}
 	}
 
-	// 頭の下に地面や柱があるかを判定するメソッド
-	private bool IsHeadAboveSurface() {
-		if (headTransform == null) {
-			Debug.LogError("頭のTransformが設定されていません！");
-			return true;
+	// 指定されたTransformの下に柱があるかを判定するメソッド
+	private bool IsOnSurface(Transform checkTransform) {
+		if (checkTransform == null) {
+			Debug.LogError("チェック用のTransformが設定されていません！");
+			return true; // エラー時は落下しないようにtrueを返す
 		}
 
 		// 下方向にRayを発射
-		Ray ray = new Ray(headTransform.position, Vector3.down);
+		Ray ray = new Ray(checkTransform.position, Vector3.down);
 
 		// 無視するレイヤーを除外したレイヤーマスクを作成
-		int layerMask = ~ignoreLayerMask.value; // ビット反転で指定レイヤーを除外
+		int layerMask = ~ignoreLayerMask.value;
 
-		// Raycastでヒットしたかどうかを確認（指定レイヤーは無視）
+		// Raycastでヒットしたかどうかを確認
 		if (Physics.Raycast(ray, out RaycastHit hit, checkDistance, layerMask)) {
 			// ヒットしたオブジェクトが柱かどうかを確認
 			if (_steelBeamController != null && hit.collider.CompareTag(_steelBeamController.steelBeamTag)) {
